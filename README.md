@@ -4,8 +4,7 @@ A drag-and-drop weekly workout planner designed to pair with a recovery signal â
 
 Everything is stored in your browser's `localStorage`. No account, no server, no sync. Drop the two files on any static host and it runs.
 
-<!-- If you've deployed this, replace the line below with your Pages URL. -->
-**Live site:** _(add your GitHub Pages URL here after deploying â€” see below)_
+**Live site:** <https://pbelzeski.github.io/WorkoutTracker/>
 
 ## Using the app (as a visitor)
 
