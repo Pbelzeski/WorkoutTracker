@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F6F2EA" />
+  <title>Weekly Split · Workout Planner</title>
+  <meta name="description" content="A drag-and-drop weekly workout planner that pairs with Whoop recovery and Garmin Body Battery." />
+
+  <!-- Icons (inline SVG data URIs — no extra files) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23F6F2EA'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='serif' font-size='40' font-style='italic' fill='%231A1816'%3EW%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='34' fill='%23F6F2EA'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='serif' font-size='112' font-style='italic' fill='%231A1816'%3EW%3C/text%3E%3C/svg%3E" />
+
+  <!-- Tailwind CDN (the component only uses core utility classes; custom colors are inline) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body, #root { background: #F6F2EA; margin: 0; }
+    body { min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .boot-loading {
+      display: flex; min-height: 100vh; align-items: center; justify-content: center;
+      font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; color: #7A746C;
+      font-style: italic; font-weight: 300;
+    }
+    .boot-error {
+      padding: 40px; max-width: 640px; margin: 0 auto;
+      font-family: 'Geist', system-ui, sans-serif; color: #1A1816; line-height: 1.55;
+    }
+    .boot-error code {
+      background: #EFE9DC; padding: 2px 6px; border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+    }
+    .boot-error pre {
+      background: #1A1816; color: #F6F2EA; padding: 14px 16px; border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      overflow-x: auto; white-space: pre-wrap; word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="boot-loading">Loading…</div>
+  </div>
+
+  <!-- Import map: resolves bare module specifiers to CDN URLs.
+       esm.sh handles the dependency tree for lucide-react.
+       react/jsx-runtime is used by esbuild's automatic JSX transform. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react":                  "https://esm.sh/react@18.3.1",
+      "react/":                 "https://esm.sh/react@18.3.1/",
+      "react-dom":              "https://esm.sh/react-dom@18.3.1?deps=react@18.3.1",
+      "react-dom/":             "https://esm.sh/react-dom@18.3.1&deps=react@18.3.1/",
+      "react-dom/client":       "https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1",
+      "lucide-react":           "https://esm.sh/lucide-react@0.383.0?deps=react@18.3.1&external=react"
+    }
+  }
+  </script>
+
+  <!-- Boot the app -->
+  <script type="module">
+    const rootEl = document.getElementById('root');
+    try {
+      const [{ default: React },
+             { createRoot },
+             { default: WorkoutPlanner }] = await Promise.all([
+        import('react'),
+        import('react-dom/client'),
+        import('./weekly-workout-planner.js'),
+      ]);
+      createRoot(rootEl).render(React.createElement(WorkoutPlanner));
+    } catch (err) {
+      console.error('Boot failed:', err);
+      rootEl.innerHTML = `
+        <div class="boot-error">
+          <h1 style="font-family:Fraunces,Georgia,serif;font-weight:400;letter-spacing:-0.02em;">Couldn't load the planner</h1>
+          <p>The app failed to boot. This usually means one of these:</p>
+          <ul>
+            <li>You opened <code>index.html</code> with a <code>file://</code> URL — most browsers block <code>import</code> on <code>file://</code>. Serve it over HTTP instead (see README).</li>
+            <li>Your network blocked <code>esm.sh</code> or <code>fonts.googleapis.com</code>.</li>
+            <li><code>weekly-workout-planner.js</code> is missing next to <code>index.html</code>.</li>
+          </ul>
+          <p><strong>Error:</strong></p>
+          <pre>${String(err && err.stack || err)}</pre>
+        </div>`;
+    }
+  </script>
+
+  <noscript>
+    <div class="boot-error">
+      <h1>JavaScript required</h1>
+      <p>This workout planner needs JavaScript enabled to run.</p>
+    </div>
+  </noscript>
+</body>
+</html>

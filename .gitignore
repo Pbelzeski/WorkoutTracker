@@ -1,0 +1,10 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Node (only relevant if you ever add a real build pipeline)
+node_modules/
+dist/
